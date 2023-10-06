@@ -60,7 +60,7 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
     >
       <MediaProvider className='relative w-full h-full grid place-items-center overflow-hidden' mediaProps={{ className: 'w-full' }}>
         <Poster
-          className="absolute top-1/2 -translate-y-1/2 w-full scale-110 "
+          className="absolute top-1/2 -translate-y-1/2 w-full scale-[102%]"
           src={data.cover}
           alt={data.title}
           hidden={playedTimes !== 0}
