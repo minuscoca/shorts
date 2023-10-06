@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-type Video = {
+export type Video = {
   title: string;
   cover: string;
   play_url: string;

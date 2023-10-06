@@ -1,13 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query/react';
 
-import { counterSlice } from './slices/counter-slice';
 import { videoListApi } from './apis/video-list-api';
 
 export const store = configureStore({
   reducer: {
-    counter: counterSlice.reducer,
-
     // Add the generated reducer as a specific top-level slice
     [videoListApi.reducerPath]: videoListApi.reducer,
   },
