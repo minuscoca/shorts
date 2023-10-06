@@ -2,26 +2,16 @@
 
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-type TData = {
-  id: string
-  title: string
-}
-
-const Data: TData[] = [
-  { id: '1', title: "Slider 1" },
-  { id: '2', title: "Slider 2" },
-  { id: '3', title: "Slider 3" },
-  { id: '4', title: "Slider 4" },
-  { id: '5', title: "Slider 5" },
-]
+import { useGetFollowingListQuery } from "../redux/apis/video-list-api";
 
 export function Carousel() {
+  const { data, isLoading } = useGetFollowingListQuery()
+
   return (
     <Swiper direction="vertical" className="w-full">
-      {Data.map((data) => (
-        <SwiperSlide key={data.id} className="w-full">
-          <CarouselItem>{data.title}</CarouselItem>
+      {data?.items?.map((video) => (
+        <SwiperSlide key={video.title} className="w-full">
+          <CarouselItem>{video.title}</CarouselItem>
         </SwiperSlide>
       ))}
     </Swiper>
@@ -33,7 +23,7 @@ function CarouselItem({
   ...props
 }: React.ComponentProps<'div'>) {
   return (
-    <div {...props} className="p-4 h-full">
+    <div {...props} className="p-4 h-full grid place-items-center">
       {children}
     </div>
   )
