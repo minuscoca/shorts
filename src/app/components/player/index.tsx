@@ -20,7 +20,7 @@ type Props = {
 export default function Player({ data, tappedTimes, isSwiping }: Props) {
   const playerRef = useRef<MediaPlayerInstance>(null)
   const { isActive } = useSwiperSlide()
-  const [paused, setPaused] = useState(false)
+  const [playedTimes, setPlayedTimes] = useState(0)
 
   // play or pause video when slide is tapped.
   useEffect(() => {
@@ -36,13 +36,13 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
     }
   }, [isActive, tappedTimes])
 
-
   // // play video when slide is swiped to active.
   useEffect(() => {
     if (playerRef.current) {
       const { canPlay, playing } = playerRef.current.state
       if (isSwiping) {
         playerRef.current.pause()
+        setPlayedTimes(0)
       } else if (isActive && canPlay && !playing) {
         playerRef.current.currentTime = 0 // restart video
         playerRef.current.play()
@@ -56,15 +56,14 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
       className='relative w-full h-full flex items-center justify-center'
       title={data.title}
       src={data.play_url}
-      onPause={() => setPaused(true)}
-      onPlay={() => setPaused(false)}
+      onPlay={() => setPlayedTimes(prev => prev + 1)}
     >
       <MediaProvider className='relative w-full h-full grid place-items-center overflow-hidden' mediaProps={{ className: 'w-full' }}>
         <Poster
           className="absolute top-1/2 -translate-y-1/2 w-full scale-110 "
           src={data.cover}
           alt={data.title}
-          hidden={!paused}
+          hidden={playedTimes !== 0}
         />
       </MediaProvider>
 
