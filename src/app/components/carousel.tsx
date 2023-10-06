@@ -2,12 +2,25 @@
 
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useGetFollowingListQuery } from "../redux/apis/video-list-api";
+import { Video } from "../redux/apis/video-list-api";
 import Player from "./player";
 import { useState } from "react";
+import { useAppDispatch } from "../redux/hooks";
+import { setActiveIndex, type Page } from "../redux/slices/app-slice";
+import { usePathname } from "next/navigation";
 
-export function Carousel() {
-  const { data, isLoading } = useGetFollowingListQuery()
+export function Carousel({
+  data,
+  isLoading,
+  page,
+  initialSlide,
+}: {
+  data: { items: Video[] } | undefined,
+  isLoading: boolean
+  page: Page
+  initialSlide: number
+}) {
+  const dispatch = useAppDispatch()
   const [isSwiping, setIsSwiping] = useState(false)
   const [tappedTimes, setTapedTimes] = useState(0)
 
@@ -15,6 +28,10 @@ export function Carousel() {
     <Swiper
       direction="vertical"
       className="w-full"
+      initialSlide={initialSlide}
+      onSlideChange={(swiper) => {
+        dispatch(setActiveIndex({ page, activeIndex: swiper.activeIndex }))
+      }}
       onSliderMove={(swiper, event) => {
         setIsSwiping(true)
         setTapedTimes(0)

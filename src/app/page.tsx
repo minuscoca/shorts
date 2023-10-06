@@ -1,9 +1,11 @@
-import { Carousel } from './components/carousel'
+import Feeds from './foryou/feeds'
+import Header from './components/header'
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <main className="h-screen flex">
-      <Carousel />
+    <main className="relative h-screen flex">
+      <Header />
+      <Feeds />
     </main>
   )
 }
