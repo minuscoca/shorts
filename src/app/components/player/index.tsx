@@ -6,10 +6,12 @@ import {
   Poster,
   type MediaPlayerInstance,
 } from '@vidstack/react';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import type { Video } from '@/app/redux/apis/video-list-api'
 import { VideoLayout } from './layout/video-layout';
 import { useSwiperSlide } from "swiper/react";
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
+import { selectIsMuted, setIsMuted } from '@/app/redux/slices/player-slice';
 
 type Props = {
   data: Video
@@ -20,6 +22,15 @@ type Props = {
 export default function Player({ data, tappedTimes, isSwiping }: Props) {
   const playerRef = useRef<MediaPlayerInstance>(null)
   const { isActive } = useSwiperSlide()
+  const dispatch = useAppDispatch()
+  const isMuted = useAppSelector(selectIsMuted)
+  const unmute = useCallback(() => {
+    if (isMuted) {
+      dispatch(setIsMuted(false))
+    }
+  }, [isMuted, dispatch])
+
+  console.log('isMuted', isMuted)
 
   /**
    * play or pause video on user tap.
@@ -28,13 +39,17 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
     if (playerRef.current) {
       const { canPlay, playing } = playerRef.current.state
 
+      if (tappedTimes === 1) {
+        unmute()
+      }
+
       if (isActive && canPlay && !playing && tappedTimes % 2 === 1) {
         playerRef.current.play()
       } else {
         playerRef.current.pause()
       }
     }
-  }, [isActive, tappedTimes])
+  }, [isActive, tappedTimes, unmute])
 
   /**
    * play video when user stop swiping.
@@ -47,7 +62,7 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
         playerRef.current.play()
       }
     }
-  }, [isActive, isSwiping])
+  }, [isActive, isSwiping, unmute])
 
   /**
    * restart when user swipe to a different video.
@@ -69,7 +84,7 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
       playsinline
     >
       <MediaProvider
-        className='relative w-full h-full'
+        className='relative w-full h-full flex items-center justify-center'
         mediaProps={{ className: 'w-full' }}
       >
         <Poster

@@ -3,10 +3,12 @@ import { setupListeners } from '@reduxjs/toolkit/query/react';
 
 import { videoListApi } from './apis/video-list-api';
 import { appSlice } from './slices/app-slice';
+import { playerSlice } from './slices/player-slice';
 
 export const store = configureStore({
   reducer: {
     app: appSlice.reducer,
+    player: playerSlice.reducer,
 
     // Add the generated reducer as a specific top-level slice
     [videoListApi.reducerPath]: videoListApi.reducer,

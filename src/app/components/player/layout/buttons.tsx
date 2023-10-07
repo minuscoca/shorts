@@ -7,7 +7,7 @@ export function Play() {
   if (!isPaused) return null
 
   return (
-    <button className='rounded-full p-2 bg-slate-950/75'>
+    <button className='rounded-full p-2 bg-slate-950/90' disabled>
       <PlayIcon size={48} />
     </button>
   );
@@ -16,10 +16,10 @@ export function Play() {
 export function Unmute() {
   const isMuted = useMediaState('muted');
 
-  if (isMuted) return null
+  if (!isMuted) return null
 
   return (
-    <button className='rounded-md px-4 py-2 flex items-center justify-center gap-2 bg-slate-50/75'>
+    <button className='rounded-md px-4 py-1 flex items-center justify-center gap-2 bg-slate-50/90' disabled>
       <MuteIcon size={20} className='text-slate-950' />
       <p className='text-slate-950'>Unmute</p>
     </button>
