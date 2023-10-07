@@ -19,9 +19,9 @@ export function VideoLayout({ data }: { data: Video }) {
         <h1 className='text-lg'>{data.title}</h1>
       </div>
 
-      <Controls.Group className="absolute top-[12%] left-[5%]">
+      {/* <Controls.Group className="absolute top-[12%] left-[5%]">
         <Buttons.Unmute />
-      </Controls.Group>
+      </Controls.Group> */}
     </Controls.Root >
   );
 }

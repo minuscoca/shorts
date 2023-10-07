@@ -7,7 +7,6 @@ import Player from "./player";
 import { useState } from "react";
 import { useAppDispatch } from "../redux/hooks";
 import { setActiveIndex, type Page } from "../redux/slices/app-slice";
-import { usePathname } from "next/navigation";
 
 export function Carousel({
   data,

@@ -30,7 +30,11 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
     }
   }, [isMuted, dispatch])
 
-  console.log('isMuted', isMuted)
+  useEffect(() => {
+    if (playerRef.current) {
+      playerRef.current.muted = isMuted
+    }
+  }, [isMuted])
 
   /**
    * play or pause video on user tap.
@@ -39,11 +43,8 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
     if (playerRef.current) {
       const { canPlay, playing } = playerRef.current.state
 
-      if (tappedTimes === 1) {
-        unmute()
-      }
-
       if (isActive && canPlay && !playing && tappedTimes % 2 === 1) {
+        unmute()
         playerRef.current.play()
       } else {
         playerRef.current.pause()
@@ -62,7 +63,7 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
         playerRef.current.play()
       }
     }
-  }, [isActive, isSwiping, unmute])
+  }, [isActive, isSwiping])
 
   /**
    * restart when user swipe to a different video.
@@ -80,7 +81,6 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
       title={data.title}
       src={data.play_url}
       loop
-      muted
       playsinline
     >
       <MediaProvider
