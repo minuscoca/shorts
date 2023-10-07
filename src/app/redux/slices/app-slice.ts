@@ -1,18 +1,25 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
 
 type AppState = Record<Page, PageParams>;
 type PageParams = {
   activeIndex: number;
 };
 
-const pages = ['following', 'foryou'] as const;
-export type Page = (typeof pages)[number];
+export const Pages = {
+  following: '/following',
+  foryou: '/foryou',
+} as const;
+export type Page = keyof typeof Pages;
+export type Pathname = (typeof Pages)[Page];
 
-const initialState = pages.reduce<AppState>((acc, curr) => {
-  acc[curr] = { activeIndex: 0 };
-  return acc;
-}, {} as AppState);
+const initialPageParams: PageParams = {
+  activeIndex: 0,
+};
+
+const initialState: AppState = {
+  following: initialPageParams,
+  foryou: initialPageParams,
+};
 
 export const appSlice = createSlice({
   name: 'app',
