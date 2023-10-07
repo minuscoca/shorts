@@ -66,7 +66,7 @@ function CarouselItem({
   ...props
 }: React.ComponentProps<'div'>) {
   return (
-    <div {...props} className="h-full grid place-items-center">
+    <div {...props} className="h-full grid place-items-center overflow-hidden">
       {children}
     </div>
   )

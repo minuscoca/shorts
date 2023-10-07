@@ -61,14 +61,17 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
   return (
     <MediaPlayer
       ref={playerRef}
-      className='w-full h-full flex items-center justify-center'
+      className='w-full h-full'
       title={data.title}
       src={data.play_url}
       loop
       muted
       playsinline
     >
-      <MediaProvider className='relative w-full h-full grid place-items-center overflow-hidden' mediaProps={{ className: 'w-full' }}>
+      <MediaProvider
+        className='relative w-full h-full'
+        mediaProps={{ className: 'w-full' }}
+      >
         <Poster
           className="absolute top-1/2 -translate-y-1/2 w-full scale-[102%]"
           src={data.cover}
