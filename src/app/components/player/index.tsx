@@ -22,11 +22,12 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
   const { isActive } = useSwiperSlide()
   const [playedTimes, setPlayedTimes] = useState(0)
 
-  // play or pause video when slide is tapped.
+  /**
+   * play or pause video on user tap.
+   */
   useEffect(() => {
     if (playerRef.current) {
       const { canPlay, playing } = playerRef.current.state
-
 
       if (isActive && canPlay && !playing && tappedTimes % 2 === 1) {
         playerRef.current.play()
@@ -36,19 +37,31 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
     }
   }, [isActive, tappedTimes])
 
-  // // play video when slide is swiped to active.
+  /**
+   * pause viedo when user is swiping.
+   * play video when user stop swiping.
+   */
   useEffect(() => {
     if (playerRef.current) {
       const { canPlay, playing } = playerRef.current.state
+
       if (isSwiping) {
         playerRef.current.pause()
         setPlayedTimes(0)
       } else if (isActive && canPlay && !playing) {
-        playerRef.current.currentTime = 0 // restart video
         playerRef.current.play()
       }
     }
   }, [isActive, isSwiping])
+
+  /**
+   * restart when user swipe to a different video.
+   */
+  useEffect(() => {
+    if (playerRef.current && isActive) {
+      playerRef.current.currentTime = 0
+    }
+  }, [isActive])
 
   return (
     <MediaPlayer
@@ -57,6 +70,7 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
       title={data.title}
       src={data.play_url}
       onPlay={() => setPlayedTimes(prev => prev + 1)}
+      autoplay
     >
       <MediaProvider className='relative w-full h-full grid place-items-center overflow-hidden' mediaProps={{ className: 'w-full' }}>
         <Poster
@@ -66,7 +80,6 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
           hidden={playedTimes !== 0}
         />
       </MediaProvider>
-
       <VideoLayout data={data} />
     </MediaPlayer>
   )
