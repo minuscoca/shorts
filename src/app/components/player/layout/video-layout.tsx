@@ -14,9 +14,14 @@ export function VideoLayout({ data }: { data: Video }) {
       <Controls.Group className="absolute inset-0 grid place-items-center">
         <Buttons.Play />
       </Controls.Group>
+
       <div className="px-[5%]">
         <h1 className='text-lg'>{data.title}</h1>
       </div>
+
+      <Controls.Group className="absolute top-16 left-4">
+        <Buttons.Unmute />
+      </Controls.Group>
     </Controls.Root >
   );
 }
