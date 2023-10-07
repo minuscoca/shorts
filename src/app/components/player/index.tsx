@@ -85,8 +85,8 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
       playsinline
     >
       <MediaProvider
-        className='relative w-full h-full flex items-center justify-center'
-        mediaProps={{ className: 'w-full', style: { height: '100svh' } }}
+        className='relative w-full h-full'
+        mediaProps={{ className: 'w-full h-full' }}
       >
         <Poster
           className="absolute top-1/2 -translate-y-1/2 w-full scale-[102%]"
