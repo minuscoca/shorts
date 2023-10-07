@@ -64,6 +64,13 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
       className='relative w-full h-full flex items-center justify-center'
       title={data.title}
       src={data.play_url}
+      onEnd={() => {
+        // replay the video on video end
+        if (playerRef.current) {
+          playerRef.current.currentTime = 0
+          playerRef.current.play()
+        }
+      }}
     >
       <MediaProvider className='relative w-full h-full grid place-items-center overflow-hidden' mediaProps={{ className: 'w-full' }}>
         <Poster
