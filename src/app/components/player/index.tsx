@@ -81,6 +81,7 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
       title={data.title}
       src={data.play_url}
       loop
+      muted
       playsinline
     >
       <MediaProvider
