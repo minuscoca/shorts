@@ -61,7 +61,7 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
   return (
     <MediaPlayer
       ref={playerRef}
-      className='relative w-full h-full flex items-center justify-center'
+      className='w-full h-full flex items-center justify-center'
       title={data.title}
       src={data.play_url}
       loop

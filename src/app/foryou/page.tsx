@@ -3,7 +3,7 @@ import Header from '../components/header'
 
 export default function ForYouPage() {
   return (
-    <main className="relative h-screen flex">
+    <main>
       <Header />
       <Feeds />
     </main>
