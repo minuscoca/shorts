@@ -6,7 +6,7 @@ import {
   Poster,
   type MediaPlayerInstance,
 } from '@vidstack/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import type { Video } from '@/app/redux/apis/video-list-api'
 import { VideoLayout } from './layout/video-layout';
 import { useSwiperSlide } from "swiper/react";
@@ -20,7 +20,6 @@ type Props = {
 export default function Player({ data, tappedTimes, isSwiping }: Props) {
   const playerRef = useRef<MediaPlayerInstance>(null)
   const { isActive } = useSwiperSlide()
-  const [playedTimes, setPlayedTimes] = useState(0)
 
   /**
    * play or pause video on user tap.
@@ -38,17 +37,13 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
   }, [isActive, tappedTimes])
 
   /**
-   * pause viedo when user is swiping.
    * play video when user stop swiping.
    */
   useEffect(() => {
-    if (playerRef.current) {
+    if (playerRef.current && isActive && !isSwiping) {
       const { canPlay, playing } = playerRef.current.state
 
-      if (isSwiping) {
-        playerRef.current.pause()
-        setPlayedTimes(0)
-      } else if (isActive && canPlay && !playing) {
+      if (canPlay && !playing) {
         playerRef.current.play()
       }
     }
@@ -69,15 +64,13 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
       className='relative w-full h-full flex items-center justify-center'
       title={data.title}
       src={data.play_url}
-      onPlay={() => setPlayedTimes(prev => prev + 1)}
-      autoplay
     >
       <MediaProvider className='relative w-full h-full grid place-items-center overflow-hidden' mediaProps={{ className: 'w-full' }}>
         <Poster
           className="absolute top-1/2 -translate-y-1/2 w-full scale-[102%]"
           src={data.cover}
           alt={data.title}
-          hidden={playedTimes !== 0}
+          hidden={!isSwiping} // show poster when user is swiping but keep the video playing
         />
       </MediaProvider>
       <VideoLayout data={data} />
