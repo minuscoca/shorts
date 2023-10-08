@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Pages, type Pathname } from "@/app/redux/slices/app-slice";
+import { cn } from "@/app/libs/utils";
 
 export default function Header() {
   return (
@@ -25,25 +26,19 @@ function NavigationTab({ title, href }: { title: string; href: Pathname }) {
   return (
     <div className="relative">
       <Link
-        className={`px-4 py-2 tracking-wider ${
-          isActive ? "opacity-100 font-bold" : "opacity-50 font-normal"
-        }`}
+        className={cn("px-4 py-2 tracking-wider opacity-50 font-normal", {
+          "opacity-100 font-bold": isActive,
+        })}
         href={href}
       >
         {title}
       </Link>
       <span
-        className={`
-      absolute 
-      -bottom-2 
-      left-1/2 
-      -translate-x-1/2 
-      w-8
-      h-[2px] 
-      rounded-sm 
-      bg-white
-      ${isActive ? "opacity-100" : "opacity-0"}
-      `}
+        className={cn(
+          "absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-[2px] rounded-sm bg-white", {
+          "opacity-0": !isActive,
+        },
+        )}
       />
     </div>
   );
