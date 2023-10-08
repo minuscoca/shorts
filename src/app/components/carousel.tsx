@@ -2,11 +2,13 @@
 
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Video } from "../redux/apis/video-list-api";
-import Player from "./player";
 import { useState } from "react";
-import { useAppDispatch } from "../redux/hooks";
-import { setActiveIndex, type Page } from "../redux/slices/app-slice";
+
+import { Video } from "@/app/redux/apis/video-list-api";
+import { useAppDispatch } from "@/app/redux/hooks";
+import { setActiveIndex, type Page } from "@/app/redux/slices/app-slice";
+
+import Player from "./player";
 
 export function Carousel({
   data,

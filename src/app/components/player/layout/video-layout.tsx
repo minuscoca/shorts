@@ -1,5 +1,7 @@
 import { Controls } from "@vidstack/react";
+
 import { Video } from "@/app/redux/apis/video-list-api";
+
 import * as Buttons from "./buttons";
 import * as Sliders from "./sliders";
 

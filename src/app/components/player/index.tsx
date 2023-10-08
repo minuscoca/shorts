@@ -10,9 +10,10 @@ import { useEffect, useRef, useState } from "react";
 import { useSwiperSlide } from "swiper/react";
 
 import type { Video } from "@/app/redux/apis/video-list-api";
-import { VideoLayout } from "./layout/video-layout";
 import { useAppSelector } from "@/app/redux/hooks";
 import { selectIsMuted } from "@/app/redux/slices/player-slice";
+
+import { VideoLayout } from "./layout/video-layout";
 
 type Props = {
   data: Video;

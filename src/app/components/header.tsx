@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Pages, type Pathname } from "../redux/slices/app-slice";
+import { Pages, type Pathname } from "@/app/redux/slices/app-slice";
 
 export default function Header() {
   return (
