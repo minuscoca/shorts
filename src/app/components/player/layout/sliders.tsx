@@ -50,8 +50,6 @@ export function Time() {
         group-data-[dragging]:border-[#cacaca] 
         ${isPaused && isActive ? "opacity-100" : "opacity-0"}
         `}
-        onDragStart={() => console.log('drag start')}
-        onDragEnd={() => console.log('drag end')}
       />}
     </TimeSlider.Root>
   );

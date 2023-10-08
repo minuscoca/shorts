@@ -6,47 +6,106 @@ import {
   Poster,
   type MediaPlayerInstance,
 } from '@vidstack/react';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSwiperSlide } from "swiper/react";
+
 import type { Video } from '@/app/redux/apis/video-list-api'
 import { VideoLayout } from './layout/video-layout';
-import { useSwiperSlide } from "swiper/react";
+import { useAppSelector } from '@/app/redux/hooks';
+import { selectIsMuted } from '@/app/redux/slices/player-slice'
+
 type Props = {
   data: Video
-  tappedTimes: number
   isSwiping: boolean
 }
 
-export default function Player({ data, tappedTimes, isSwiping }: Props) {
+export default function Player({ data, isSwiping }: Props) {
   const playerRef = useRef<MediaPlayerInstance>(null)
   const { isActive } = useSwiperSlide()
+  const isMuted = useAppSelector(selectIsMuted)
+  const [isReady, setIsReady] = useState(false)
 
   /**
-   * play or pause video on user tap.
+   * tap to play or pause video.
    */
-  useEffect(() => {
-    if (playerRef.current) {
-      const { canPlay, playing } = playerRef.current.state
-
-      if (isActive && canPlay && !playing && tappedTimes % 2 === 1) {
-        playerRef.current.play()
-      } else {
+  const handleVideoClick = useCallback(() => {
+    if (playerRef.current && isActive) {
+      if (playerRef.current.state.playing) {
         playerRef.current.pause()
+      } else {
+        playerRef.current.play()
       }
     }
-  }, [isActive, tappedTimes])
+  }, [isActive])
 
   /**
-   * play video when user stop swiping.
+   * tirggered when the unmute button is clicked.
+   */
+  const handleUnmute = useCallback(() => {
+    if (playerRef.current && isActive && isReady) {
+      playerRef.current.muted = false
+    }
+  }, [isActive, isReady])
+
+  /**
+   * triggered when user start touching.
+   */
+  const handleTouchStart = useCallback(() => {
+    if (playerRef.current) {
+      playerRef.current.muted = true
+    }
+  }, [])
+
+  /**
+   * triggered when user end touching.
+   */
+  const handleTouchEnd = useCallback(() => {
+    if (playerRef.current) {
+      playerRef.current.muted = isMuted
+    }
+  }, [isMuted])
+
+  /**
+   * add/remove event listeners to handle video muted.
+   */
+  useEffect(() => {
+    const unmutBtnElement = document.getElementById('unmute-btn')
+    if (unmutBtnElement) {
+      unmutBtnElement.addEventListener('click', handleUnmute)
+    }
+    document.addEventListener('touchstart', handleTouchStart)
+    document.addEventListener('touchend', handleTouchEnd)
+
+    return () => {
+      if (unmutBtnElement) {
+        unmutBtnElement.removeEventListener('click', handleUnmute)
+      }
+      document.removeEventListener('touchstart', handleTouchStart)
+      document.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [handleUnmute, handleTouchStart, handleTouchEnd])
+
+  /**
+   * play paused active video when user stop swiping.
    */
   useEffect(() => {
     if (playerRef.current && isActive && !isSwiping) {
-      const { canPlay, playing } = playerRef.current.state
-
-      if (canPlay && !playing) {
+      const { paused } = playerRef.current.state
+      if (isReady && paused) {
         playerRef.current.play()
       }
     }
-  }, [isActive, isSwiping])
+  }, [isActive, isSwiping, isReady])
+
+  /**
+   * pause all playing video when swiping.
+   */
+  useEffect(() => {
+    if (playerRef.current) {
+      if (isSwiping && playerRef.current.state.playing)
+        playerRef.current.pause()
+    }
+  }, [isSwiping])
 
   /**
    * restart when user swipe to a different video.
@@ -66,16 +125,8 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
       loop
       muted
       playsinline
-      onPlay={() => {
-        if (playerRef.current) {
-          playerRef.current.muted = false
-        }
-      }}
-      onPause={() => {
-        if (playerRef.current) {
-          playerRef.current.muted = true
-        }
-      }}
+      onCanPlay={() => setIsReady(true)}
+      onClick={handleVideoClick}
     >
       <MediaProvider
         className='relative w-full h-full'
