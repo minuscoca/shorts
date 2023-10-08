@@ -6,13 +6,10 @@ import {
   Poster,
   type MediaPlayerInstance,
 } from '@vidstack/react';
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import type { Video } from '@/app/redux/apis/video-list-api'
 import { VideoLayout } from './layout/video-layout';
 import { useSwiperSlide } from "swiper/react";
-import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
-import { selectIsMuted, setIsMuted } from '@/app/redux/slices/player-slice';
-
 type Props = {
   data: Video
   tappedTimes: number
@@ -22,19 +19,6 @@ type Props = {
 export default function Player({ data, tappedTimes, isSwiping }: Props) {
   const playerRef = useRef<MediaPlayerInstance>(null)
   const { isActive } = useSwiperSlide()
-  const dispatch = useAppDispatch()
-  const isMuted = useAppSelector(selectIsMuted)
-  const unmute = useCallback(() => {
-    if (isMuted) {
-      dispatch(setIsMuted(false))
-    }
-  }, [isMuted, dispatch])
-
-  useEffect(() => {
-    if (playerRef.current) {
-      playerRef.current.muted = isMuted
-    }
-  }, [isMuted])
 
   /**
    * play or pause video on user tap.
@@ -44,13 +28,12 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
       const { canPlay, playing } = playerRef.current.state
 
       if (isActive && canPlay && !playing && tappedTimes % 2 === 1) {
-        unmute()
         playerRef.current.play()
       } else {
         playerRef.current.pause()
       }
     }
-  }, [isActive, tappedTimes, unmute])
+  }, [isActive, tappedTimes])
 
   /**
    * play video when user stop swiping.
@@ -83,6 +66,16 @@ export default function Player({ data, tappedTimes, isSwiping }: Props) {
       loop
       muted
       playsinline
+      onPlay={() => {
+        if (playerRef.current) {
+          playerRef.current.muted = false
+        }
+      }}
+      onPause={() => {
+        if (playerRef.current) {
+          playerRef.current.muted = true
+        }
+      }}
     >
       <MediaProvider
         className='relative w-full h-full'
