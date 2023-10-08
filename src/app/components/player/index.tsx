@@ -29,14 +29,14 @@ export default function Player({ data, isSwiping }: Props) {
    * tap to play or pause video.
    */
   const handleVideoClick = useCallback(() => {
-    if (playerRef.current && isActive) {
+    if (playerRef.current && isActive && isReady) {
       if (playerRef.current.state.playing) {
         playerRef.current.pause()
       } else {
         playerRef.current.play()
       }
     }
-  }, [isActive])
+  }, [isActive, isReady])
 
   /**
    * tirggered when the unmute button is clicked.
