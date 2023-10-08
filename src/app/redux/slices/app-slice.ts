@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type AppState = Record<Page, PageParams>;
 type PageParams = {
@@ -6,8 +6,8 @@ type PageParams = {
 };
 
 export const Pages = {
-  following: '/following',
-  foryou: '/foryou',
+  following: "/following",
+  foryou: "/foryou",
 } as const;
 export type Page = keyof typeof Pages;
 export type Pathname = (typeof Pages)[Page];
@@ -22,12 +22,12 @@ const initialState: AppState = {
 };
 
 export const appSlice = createSlice({
-  name: 'app',
+  name: "app",
   initialState,
   reducers: {
     setActiveIndex: (
       state,
-      action: PayloadAction<{ page: Page; activeIndex: number }>
+      action: PayloadAction<{ page: Page; activeIndex: number }>,
     ) => {
       const { page, activeIndex } = action.payload;
       state[page].activeIndex = activeIndex;

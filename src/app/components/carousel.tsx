@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,13 +14,13 @@ export function Carousel({
   page,
   initialSlide,
 }: {
-  data: { items: Video[] } | undefined,
-  isLoading: boolean
-  page: Page
-  initialSlide: number
+  data: { items: Video[] } | undefined;
+  isLoading: boolean;
+  page: Page;
+  initialSlide: number;
 }) {
-  const dispatch = useAppDispatch()
-  const [isSwiping, setIsSwiping] = useState(false)
+  const dispatch = useAppDispatch();
+  const [isSwiping, setIsSwiping] = useState(false);
 
   return (
     <Swiper
@@ -30,25 +30,25 @@ export function Carousel({
       onSliderMove={() => setIsSwiping(true)}
       onTouchEnd={() => setIsSwiping(false)}
       onSlideChange={(swiper) => {
-        const { activeIndex } = swiper
-        dispatch(setActiveIndex({ page, activeIndex }))
+        const { activeIndex } = swiper;
+        dispatch(setActiveIndex({ page, activeIndex }));
       }}
     >
       {data?.items?.map((video) => (
-        <SwiperSlide key={video.title} className="w-full"        >
+        <SwiperSlide key={video.title} className="w-full">
           <CarouselItem>
             <Player data={video} isSwiping={isSwiping} />
           </CarouselItem>
         </SwiperSlide>
       ))}
     </Swiper>
-  )
+  );
 }
 
-function CarouselItem({ children, ...props }: React.ComponentProps<'div'>) {
+function CarouselItem({ children, ...props }: React.ComponentProps<"div">) {
   return (
     <div className="h-full grid place-items-center overflow-hidden" {...props}>
       {children}
     </div>
-  )
+  );
 }

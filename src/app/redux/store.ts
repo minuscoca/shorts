@@ -1,9 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query/react';
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query/react";
 
-import { videoListApi } from './apis/video-list-api';
-import { appSlice } from './slices/app-slice';
-import { playerSlice } from './slices/player-slice';
+import { videoListApi } from "./apis/video-list-api";
+import { appSlice } from "./slices/app-slice";
+import { playerSlice } from "./slices/player-slice";
 
 export const store = configureStore({
   reducer: {

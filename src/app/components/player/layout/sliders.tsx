@@ -1,9 +1,9 @@
-import { TimeSlider, useMediaState } from '@vidstack/react';
-import { useSwiperSlide } from 'swiper/react';
+import { TimeSlider, useMediaState } from "@vidstack/react";
+import { useSwiperSlide } from "swiper/react";
 
 export function Time() {
-  const isPaused = useMediaState('paused');
-  const { isActive } = useSwiperSlide()
+  const isPaused = useMediaState("paused");
+  const { isActive } = useSwiperSlide();
 
   return (
     <TimeSlider.Root
@@ -17,21 +17,34 @@ export function Time() {
           cues.map((cue) => (
             <div
               className="last-child:mr-0 relative mr-0.5 flex h-full w-full items-center"
-              style={{ contain: 'layout style' }}
+              style={{ contain: "layout style" }}
               key={cue.startTime}
               ref={forwardRef}
             >
-              <TimeSlider.Track className={`relative ring-media-focus z-0 h-[5px] w-full bg-white/30 ${isPaused && isActive ? 'rounded-sm' : 'rounded-none'}`}>
-                <TimeSlider.TrackFill className={`bg-red-500 absolute h-full w-[var(--chapter-fill)] will-change-[width] ${isPaused && isActive ? 'rounded-sm' : 'rounded-none'}`} />
-                <TimeSlider.Progress className={`absolute z-10 h-full w-[var(--chapter-progress)] will-change-[width] ${isPaused && isActive ? 'rounded-sm' : 'rounded-none'}`} />
+              <TimeSlider.Track
+                className={`relative ring-media-focus z-0 h-[5px] w-full bg-white/30 ${
+                  isPaused && isActive ? "rounded-sm" : "rounded-none"
+                }`}
+              >
+                <TimeSlider.TrackFill
+                  className={`bg-red-500 absolute h-full w-[var(--chapter-fill)] will-change-[width] ${
+                    isPaused && isActive ? "rounded-sm" : "rounded-none"
+                  }`}
+                />
+                <TimeSlider.Progress
+                  className={`absolute z-10 h-full w-[var(--chapter-progress)] will-change-[width] ${
+                    isPaused && isActive ? "rounded-sm" : "rounded-none"
+                  }`}
+                />
               </TimeSlider.Track>
             </div>
           ))
         }
       </TimeSlider.Chapters>
 
-      {isPaused && <TimeSlider.Thumb
-        className={`
+      {isPaused && (
+        <TimeSlider.Thumb
+          className={`
         absolute 
         left-[var(--slider-fill)] 
         top-1/2 
@@ -50,7 +63,8 @@ export function Time() {
         group-data-[dragging]:border-[#cacaca] 
         ${isPaused && isActive ? "opacity-100" : "opacity-0"}
         `}
-      />}
+        />
+      )}
     </TimeSlider.Root>
   );
 }

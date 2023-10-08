@@ -1,5 +1,5 @@
-import Feeds from './foryou/feeds'
-import Header from './components/header'
+import Feeds from "./foryou/feeds";
+import Header from "./components/header";
 
 export default function HomePage() {
   return (
@@ -7,5 +7,5 @@ export default function HomePage() {
       <Header />
       <Feeds />
     </main>
-  )
+  );
 }

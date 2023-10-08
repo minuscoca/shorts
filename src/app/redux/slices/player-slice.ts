@@ -1,5 +1,5 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 type PlayerState = {
   isMuted: boolean;
@@ -10,7 +10,7 @@ const initialState: PlayerState = {
 };
 
 export const playerSlice = createSlice({
-  name: 'player',
+  name: "player",
   initialState,
   reducers: {
     setIsMuted: (state, action: PayloadAction<boolean>) => {
