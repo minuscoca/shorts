@@ -26,49 +26,36 @@ export default function Player({ data, isSwiping }: Props) {
   const [isReady, setIsReady] = useState(false)
 
   /**
-   * tap to play or pause video.
-   */
-  const handleVideoClick = useCallback(() => {
-    if (playerRef.current && isActive && isReady) {
-      if (playerRef.current.state.playing) {
-        playerRef.current.pause()
-      } else {
-        playerRef.current.play()
-      }
-    }
-  }, [isActive, isReady])
-
-  /**
-   * tirggered when the unmute button is clicked.
-   */
-  const handleUnmute = useCallback(() => {
-    if (playerRef.current && isActive && isReady) {
-      playerRef.current.muted = false
-    }
-  }, [isActive, isReady])
-
-  /**
-   * triggered when user start touching.
-   */
-  const handleTouchStart = useCallback(() => {
-    if (playerRef.current) {
-      playerRef.current.muted = true
-    }
-  }, [])
-
-  /**
-   * triggered when user end touching.
-   */
-  const handleTouchEnd = useCallback(() => {
-    if (playerRef.current) {
-      playerRef.current.muted = isMuted
-    }
-  }, [isMuted])
-
-  /**
    * add/remove event listeners to handle video muted.
    */
   useEffect(() => {
+    /**
+     * tirggered when the unmute button is clicked.
+     */
+    const handleUnmute = () => {
+      if (playerRef.current && isActive) {
+        playerRef.current.muted = false
+      }
+    }
+
+    /**
+     * triggered when user start touching.
+     */
+    const handleTouchStart = () => {
+      if (playerRef.current) {
+        playerRef.current.muted = true
+      }
+    }
+
+    /**
+     * triggered when user end touching.
+     */
+    const handleTouchEnd = () => {
+      if (playerRef.current) {
+        playerRef.current.muted = isMuted
+      }
+    }
+
     const unmutBtnElement = document.getElementById('unmute-btn')
     if (unmutBtnElement) {
       unmutBtnElement.addEventListener('click', handleUnmute)
@@ -83,7 +70,7 @@ export default function Player({ data, isSwiping }: Props) {
       document.removeEventListener('touchstart', handleTouchStart)
       document.removeEventListener('touchend', handleTouchEnd)
     }
-  }, [handleUnmute, handleTouchStart, handleTouchEnd])
+  }, [isActive, isMuted])
 
   /**
    * play paused active video when user stop swiping.
@@ -126,7 +113,17 @@ export default function Player({ data, isSwiping }: Props) {
       muted
       playsinline
       onCanPlay={() => setIsReady(true)}
-      onClick={handleVideoClick}
+      onClick={
+        // tap to play or pause video.
+        () => {
+          if (playerRef.current && isActive && isReady) {
+            if (playerRef.current.state.playing) {
+              playerRef.current.pause()
+            } else {
+              playerRef.current.play()
+            }
+          }
+        }}
     >
       <MediaProvider
         className='relative w-full h-full'
